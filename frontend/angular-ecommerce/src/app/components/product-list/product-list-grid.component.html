@@ -1,0 +1,75 @@
+<div class="main-content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="row">
+
+                <!-- loop over the collection of products -->
+                <div *ngFor="let tempProduct of products" class="col-md-3">
+
+                    <div class="product-box">
+
+                        <a routerLink="/products/{{ tempProduct.id }}">
+                            <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
+                        </a>
+
+                        <a routerLink="/products/{{ tempProduct.id }}">
+                            <h1>{{ tempProduct.name }}</h1>
+                        </a>
+
+                        <div class="price">{{ tempProduct.unitPrice | currency:'USD' }}</div>
+                        <button (click)="addToCart(tempProduct)" class="button">Add to cart</button>
+                    </div>
+
+                </div>
+
+                <!-- if products empty then display a message-->
+                <!-- check the length of the products
+                (?) is the safe navigation operator, guards against null and undefined values in property paths-->
+                <!-- if (product is null/undefined) or (products.length == 0), display: "No products found"-->
+                <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+                    No products found.
+                </div>
+
+            </div>
+
+            <!-- begin footer -->
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="col-md-6"></div>
+
+                    <div class="col-md-6">
+                        <div class="page-size">
+                            <div>
+                                <!-- left: parameter of ngb-pagination component -->
+                                <!-- right: properties of ProductListComponent -->
+                                <ngb-pagination [(page)]="thePageNumber" 
+                                    [pageSize]="thePageSize"
+                                    [collectionSize]="theTotalElements"
+                                    [maxSize]="5"
+                                    [boundaryLinks]="true"
+                                    (pageChange)="listProducts()">
+                                    <!-- pageChange: event-binding pageChange event -->
+                                </ngb-pagination>
+
+                            </div>
+                            <div class="select-page">
+                                <span>Page Size: </span>
+                                <!-- event binding: on change, when user selects a page -> call method updatePageSize -->
+                                <!-- myPageSelect.value: The value that is selected by the user -->
+                                <select #myPageSelect (change)="updatePageSize(myPageSelect.value)" >
+                                    <option selected="true">5</option>
+                                    <option>10</option>
+                                    <option>20</option>
+                                    <option>50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end footer -->
+
+        </div>
+    </div>
+</div>
